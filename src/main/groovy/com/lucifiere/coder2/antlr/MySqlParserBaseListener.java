@@ -1,6 +1,8 @@
 // Generated from /Users/user/Code/coder2/src/main/resources/antlr/MySqlParser.g4 by ANTLR 4.7.2
 package antlr;
 
+import com.lucifiere.coder2.antlr.MySqlParserListener;
+import com.lucifiere.coder2.antlr.MySqlParser;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;

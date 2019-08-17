@@ -1,5 +1,6 @@
 // Generated from /Users/user/Code/coder2/src/main/resources/antlr/MySqlParser.g4 by ANTLR 4.7.2
 package com.lucifiere.coder2.antlr;
+
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
 /**
