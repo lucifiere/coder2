@@ -1,19 +1,29 @@
 package com.lucifiere.coder2.model
 
-import lombok.Getter
-import lombok.Setter
-
 /**
  * 业务数据
  *
  * @author XD.Wang
  */
-@Getter
-@Setter
 class BizDataContent {
 
     private String entity
 
     private List<Field> fields
 
+    String getEntity() {
+        return entity
+    }
+
+    void setEntity(String entity) {
+        this.entity = entity
+    }
+
+    List<Field> getFields() {
+        return fields
+    }
+
+    void setFields(List<Field> fields) {
+        this.fields = fields
+    }
 }

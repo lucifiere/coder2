@@ -1,12 +1,15 @@
 package com.lucifiere.coder2.model
 
-import lombok.Getter
-import lombok.Setter
-
-@Getter
-@Setter
 class TextBizDataSourceContext {
 
-    String tablePrefix
+    private String tablePrefix
+
+    String getTablePrefix() {
+        return tablePrefix
+    }
+
+    void setTablePrefix(String tablePrefix) {
+        this.tablePrefix = tablePrefix
+    }
 
 }

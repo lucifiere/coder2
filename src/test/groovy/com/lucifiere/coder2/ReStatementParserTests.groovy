@@ -10,4 +10,5 @@ class ReStatementParserTests {
         String line = "1 2 3 4"
         println ReStatementParser.createStatement(line)
     }
+
 }
