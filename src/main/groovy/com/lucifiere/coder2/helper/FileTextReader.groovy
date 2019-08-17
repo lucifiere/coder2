@@ -1,5 +1,9 @@
 package com.lucifiere.coder2.helper
 
+import cn.hutool.core.util.StrUtil
+
+import java.util.stream.Collectors
+
 class FileTextReader implements TextReader {
 
     private String path
@@ -11,7 +15,10 @@ class FileTextReader implements TextReader {
     @Override
     List<String> getText() {
         try {
-            return new File(path).readLines()
+            List<String> lines = new File(path).readLines()
+            lines.stream().map {
+                StrUtil.trim(it)
+            }.collect(Collectors.toList())
         } catch (Exception ignored) {
             return null
         }

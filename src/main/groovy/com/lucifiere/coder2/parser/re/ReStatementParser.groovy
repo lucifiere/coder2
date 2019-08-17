@@ -2,12 +2,14 @@ package com.lucifiere.coder2.parser.re
 
 import cn.hutool.core.util.StrUtil
 import com.lucifiere.coder2.constants.FieldType
+import com.lucifiere.coder2.constants.MySqlKeywords
 import org.apache.commons.lang3.StringUtils
 import org.springframework.util.CollectionUtils
 
 final class ReStatementParser {
 
     static Statement createStatement(String line) {
+        if (StrUtil.isBlank(line)) return null
         List<String> tokenStrList = line.tokenize(StrUtil.SPACE)
         Token root = new Token(TokenTypeEnum.ROOT, StrUtil.EMPTY)
         Token firstOne = createTokens(root, tokenStrList.iterator())
@@ -39,18 +41,16 @@ final class ReStatementParser {
         tokens
     }
 
-    public static String FILED_IDENTITY = "`"
-
     static String extractFiled(String value) {
-        isFiledLine(value) ? value.substring(1, value.length() - 1) : ""
+        isFiledToken(value) ? value.substring(1, value.length() - 1) : ""
     }
 
     static String extractComment(String text) {
         text.find(~/(?<=').*(?=')/) ?: ""
     }
 
-    static boolean isFiledLine(String value) {
-        StringUtils.isNotEmpty(value) && value.startsWith(FILED_IDENTITY) && value.endsWith(FILED_IDENTITY)
+    static boolean isFiledToken(String value) {
+        StringUtils.isNotEmpty(value) && value.startsWith(MySqlKeywords.FILED_IDENTITY) && value.endsWith(MySqlKeywords.FILED_IDENTITY)
     }
 
     static FieldType extractFiledType(String text) {
@@ -71,9 +71,11 @@ final class ReStatementParser {
     }
 
     static String extractFiledComment(Statement statement) {
-        if (!CollectionUtils.isEmpty(statement.line)) {
-            int keywordIndex = statement.line.findLastIndexOf { it.toLowerCase() == "comment" } + 1
-            return extractComment(statement.line.get(keywordIndex))
+        if (!CollectionUtils.isEmpty(statement.getTokenStr())) {
+            int keywordIndex = statement.getTokenStr().findLastIndexOf {
+                StrUtil.equals(it, MySqlKeywords.COMMENT, true)
+            } + 1
+            return extractComment(statement.getTokenStr().get(keywordIndex))
         }
         null
     }

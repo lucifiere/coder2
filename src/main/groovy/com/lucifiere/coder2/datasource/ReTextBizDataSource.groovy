@@ -2,6 +2,7 @@ package com.lucifiere.coder2.datasource
 
 import cn.hutool.core.collection.CollectionUtil
 import cn.hutool.core.util.StrUtil
+import com.lucifiere.coder2.constants.MySqlKeywords
 import com.lucifiere.coder2.helper.TextReader
 import com.lucifiere.coder2.model.BizDataContent
 import com.lucifiere.coder2.model.Field
@@ -9,7 +10,8 @@ import com.lucifiere.coder2.model.TextBizDataSourceContext
 import com.lucifiere.coder2.parser.re.ReStatementParser
 import com.lucifiere.coder2.parser.re.Statement
 import com.lucifiere.coder2.parser.re.Token
-import com.lucifiere.coder2.utils.StringUtils
+
+import java.util.stream.Collectors
 
 class ReTextBizDataSource extends TextBizDataSource {
 
@@ -26,27 +28,28 @@ class ReTextBizDataSource extends TextBizDataSource {
         List<List<String>> tokens = []
         super.lines.each { tokens << it.tokenize(StrUtil.SPACE) }
         assert CollectionUtil.isNotEmpty(tokens)
-        def statements = []
+        List<Statement> statements = []
         lines.each {
             statements << ReStatementParser.createStatement(it)
         }
+        statements = statements.stream().filter { Objects.nonNull(it) }.collect(Collectors.toList())
         // 提取业务数据
         BizDataContent bizDataContent = new BizDataContent()
-        String entity = extractEntity(statements)
-        bizDataContent.setEntity(entity)
+        String tableName = extractSimpleTableName(statements)
+        bizDataContent.setIdentity(tableName)
         List<Field> fields = extractFields(statements)
         bizDataContent.setFields(fields)
         bizDataContent
     }
 
-    private String extractEntity(List<Statement> statements) {
+    private String extractSimpleTableName(List<Statement> statements) {
         for (Statement statement : statements) {
             for (Token token : statement.getTokens()) {
-                def isTableDefStatement = token.getPrev().getContent() == "create" && token.getContent() == "table"
+                def isTableDefStatement = token != null && token.getPrev() != null && StrUtil.equals(token.getPrev().getContent(), MySqlKeywords.CREATE, true) && StrUtil.equals(token.getContent(), MySqlKeywords.TABLE, true)
                 if (isTableDefStatement) {
                     String simpleTableName = ReStatementParser.extractFiled(token.getNext().getContent())
                     simpleTableName = simpleTableName.replaceFirst(context.getTablePrefix(), StrUtil.EMPTY)
-                    return StringUtils.toCamel(simpleTableName)
+                    return simpleTableName
                 }
             }
         }
@@ -56,9 +59,10 @@ class ReTextBizDataSource extends TextBizDataSource {
     private List<Field> extractFields(List<Statement> statements) {
         List<Field> fields = []
         for (Statement statement : statements) {
-            if (ReStatementParser.isFiledLine(statement.getLine())) {
+            if (CollectionUtil.isEmpty(statement.getTokens())) continue
+            Token firstContentNode = statement.getTokens().get(1)
+            if (ReStatementParser.isFiledToken(firstContentNode.getContent())) {
                 Field field = new Field()
-                Token firstContentNode = statement.getTokens().get(1)
                 field.setName(ReStatementParser.extractFiled(firstContentNode.getContent()))
                 field.setFieldType(ReStatementParser.extractFiledType(firstContentNode.getNext().getContent()))
                 field.setLength(ReStatementParser.extractFiledLength(firstContentNode.getNext().getContent(), field.getFieldType()))

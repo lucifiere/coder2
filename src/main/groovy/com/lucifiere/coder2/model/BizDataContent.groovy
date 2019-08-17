@@ -7,17 +7,9 @@ package com.lucifiere.coder2.model
  */
 class BizDataContent {
 
-    private String entity
+    private Identity identity
 
     private List<Field> fields
-
-    String getEntity() {
-        return entity
-    }
-
-    void setEntity(String entity) {
-        this.entity = entity
-    }
 
     List<Field> getFields() {
         return fields
@@ -26,4 +18,18 @@ class BizDataContent {
     void setFields(List<Field> fields) {
         this.fields = fields
     }
+
+
+    void setIdentity(String identity) {
+        this.identity = Identity.of(identity, Identity.NameStyle.UNDERLINE)
+    }
+
+    @Override
+    String toString() {
+        return "BizDataContent{" +
+                "identity='" + identity + '\'' +
+                ", fields=" + fields +
+                '}'
+    }
+
 }

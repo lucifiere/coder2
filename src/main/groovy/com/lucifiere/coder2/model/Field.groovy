@@ -6,9 +6,7 @@ class Field {
 
     private FieldType fieldType
 
-    private String sqlName
-
-    private String javaName
+    private Identity name
 
     private Integer length
 
@@ -23,8 +21,7 @@ class Field {
     }
 
     void setName(String name) {
-        this.sqlName = name
-        this.javaName = CommonUtils.toCamel(name)
+        this.name = Identity.of(name, Identity.NameStyle.UNDERLINE)
     }
 
     String getSqlName() {
@@ -58,4 +55,5 @@ class Field {
     void setComment(String comment) {
         this.comment = comment
     }
+
 }
