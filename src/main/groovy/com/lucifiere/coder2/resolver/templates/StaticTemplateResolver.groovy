@@ -4,64 +4,45 @@ import cn.hutool.core.util.StrUtil
 import com.lucifiere.coder2.datasource.FileTextReader
 import com.lucifiere.coder2.model.BizDataContent
 import com.lucifiere.coder2.resolver.Resolver
+import com.lucifiere.coder2.resolver.templates.nodes.FieldPhaseNode
+import com.lucifiere.coder2.resolver.templates.nodes.PhaseNodeUtils
+import com.lucifiere.coder2.resolver.templates.nodes.PlainPhaseNode
+import com.lucifiere.coder2.resolver.templates.nodes.TemplatePhaseNode
+import org.springframework.expression.spel.standard.SpelExpressionParser
+
+import java.util.stream.Collectors
 
 class StaticTemplateResolver implements Resolver {
 
-    final static String FILED_BEGIN = ">>>"
+    final private FileTextReader fileTextReader
 
-    final static String FILED_END = "<<<"
+    final private BizDataContent bizDataContent
 
-    private FileTextReader fileTextReader
+    final private ExpressionParser = new SpelExpressionParser()
 
-    StaticTemplateResolver(String templatePath) {
-        fileTextReader = new FileTextReader(templatePath)
+    StaticTemplateResolver(String templatePath, BizDataContent bizDataContent) {
+        this.fileTextReader = new FileTextReader(templatePath)
+        this.bizDataContent = bizDataContent
     }
 
     @Override
-    String render(BizDataContent c) {
+    String resolve() {
         List<String> templates = fileTextReader.getText()
-        List<TemplatePhaseNode> nodes = createTemplatePhaseNodes(templates)
-        nodes.sort()
-        return null
+        List<TemplatePhaseNode> nodes = PhaseNodeUtils.createTemplatePhaseNodes(templates)
+        nodes = nodes.sort()
+        return renderNodes(nodes)
     }
 
-    private static List<TemplatePhaseNode> createTemplatePhaseNodes(List<String> content) {
-        List<TemplatePhaseNode> nodes = []
-        extractFieldPhaseNodes(content).each { nodes << it }
-        extractPlainPhaseNodes(content).each { nodes << it }
+    private String renderNodes(List<TemplatePhaseNode> nodes) {
+        nodes.stream().map { this.render(it) }.collect(Collectors.joining(StrUtil.EMPTY))
     }
 
-    private static List<TemplatePhaseNode> extractFieldPhaseNodes(List<String> lines) {
-        extractPhaseNodes(lines, { line -> line == FILED_BEGIN }, { line -> line == FILED_END })
+    private String render(FieldPhaseNode fieldPhaseNode) {
+
     }
 
-    private static List<TemplatePhaseNode> extractPlainPhaseNodes(List<String> lines) {
-        extractPhaseNodes(lines, { line -> line != FILED_BEGIN }, { line -> line == FILED_BEGIN })
-    }
+    private String render(PlainPhaseNode fieldPhaseNode) {
 
-    private static List<TemplatePhaseNode> extractPhaseNodes(List<String> lines, Closure<Boolean> startMatching, Closure<Boolean> endMatching) {
-        boolean matching = true
-        int matchedStartLine = 1, lineNum = 1
-        List<TemplatePhaseNode> nodes = []
-        String matchedStr = StrUtil.EMPTY
-        for (int i = 1; i <= lines.size(); i++) {
-            String cur = lines[i - 1]
-            if (startMatching.call(cur)) {
-                matching = false; continue
-            }
-            if (endMatching.call(cur)) {
-                matching = true; continue
-            }
-            if (matching) {
-                matchedStartLine = i
-                matchedStr += cur
-            } else if (StrUtil.isNotBlank(matchedStr)) {
-                nodes << new FieldPhaseNode(matchedStartLine, i, matchedStr)
-                matchedStr = StrUtil.EMPTY
-            }
-            lineNum++
-        }
-        nodes
     }
 
 }

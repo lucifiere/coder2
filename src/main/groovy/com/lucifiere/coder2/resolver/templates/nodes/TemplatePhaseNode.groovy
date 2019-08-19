@@ -1,4 +1,4 @@
-package com.lucifiere.coder2.resolver.templates
+package com.lucifiere.coder2.resolver.templates.nodes
 
 abstract class TemplatePhaseNode implements Comparable<TemplatePhaseNode> {
 
@@ -6,9 +6,7 @@ abstract class TemplatePhaseNode implements Comparable<TemplatePhaseNode> {
 
     private int endLineNum
 
-    private String content
-
-    abstract String render()
+    protected String content
 
     Tuple2<Integer, Integer> getLineNum() {
         return new Tuple2<Integer, Integer>(startLineNum, endLineNum)

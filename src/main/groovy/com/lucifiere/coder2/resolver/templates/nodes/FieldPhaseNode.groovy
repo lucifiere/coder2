@@ -1,14 +1,9 @@
-package com.lucifiere.coder2.resolver.templates
+package com.lucifiere.coder2.resolver.templates.nodes
 
 class FieldPhaseNode extends TemplatePhaseNode {
 
     FieldPhaseNode(int startLineNum, int endLineNum, String content) {
         super(startLineNum, endLineNum, content)
-    }
-
-    @Override
-    String render() {
-        return null
     }
 
 }
