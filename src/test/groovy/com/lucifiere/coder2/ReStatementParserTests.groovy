@@ -1,6 +1,6 @@
 package com.lucifiere.coder2
 
-import com.lucifiere.coder2.parser.re.ReStatementParser
+import com.lucifiere.coder2.provider.parser.re.ReStatementParser
 import org.junit.Test
 
 class ReStatementParserTests {

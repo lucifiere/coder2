@@ -1,4 +1,4 @@
-package com.lucifiere.coder2.parser.re
+package com.lucifiere.coder2.provider.parser.re
 
 import cn.hutool.core.util.StrUtil
 import com.lucifiere.coder2.constants.FieldType
@@ -19,9 +19,7 @@ final class ReStatementParser {
     }
 
     private static Token createTokens(Token prev, Iterator<String> itr) {
-        if (!itr.hasNext()) {
-            return null
-        }
+        if (!itr.hasNext()) return null
         String cur = itr.next()
         ReParserUtils.checkTokenAvailable(cur)
         Token curToken = new Token(ReParserUtils.analysisTokenType(cur), cur)
@@ -46,7 +44,7 @@ final class ReStatementParser {
     }
 
     static String extractComment(String text) {
-        text.find(~/(?<=').*(?=')/) ?: ""
+        text.find(RePattern.COMMENT_PAT) ?: ""
     }
 
     static boolean isFiledToken(String value) {
@@ -54,12 +52,12 @@ final class ReStatementParser {
     }
 
     static FieldType extractFiledType(String text) {
-        String type = text.find(~/.*(?=\()/) ?: text
+        String type = text.find(RePattern.FIELD_TYPE_PAT) ?: text
         FieldType.findByLiteral(type)
     }
 
     static Integer extractFiledLength(String text, FieldType fieldType) {
-        String length = text.find(~/(?<=\().*(?=\))/)
+        String length = text.find(RePattern.FIELD_lEN_PAT)
         def decimalType = [FieldType.NUM_DOUBLE, FieldType.NUM_FLOAT, FieldType.NUM_DECIMAL]
         if (StringUtils.isEmpty(length)) {
             return null

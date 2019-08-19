@@ -1,4 +1,4 @@
-package com.lucifiere.coder2.parser.re
+package com.lucifiere.coder2.provider.parser.re
 
 class Token {
 

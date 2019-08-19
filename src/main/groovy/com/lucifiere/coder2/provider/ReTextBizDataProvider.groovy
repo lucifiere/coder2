@@ -1,23 +1,23 @@
-package com.lucifiere.coder2.datasource
+package com.lucifiere.coder2.provider
 
 import cn.hutool.core.collection.CollectionUtil
 import cn.hutool.core.util.StrUtil
 import com.lucifiere.coder2.constants.MySqlKeywords
-import com.lucifiere.coder2.helper.TextReader
+import com.lucifiere.coder2.datasource.TextDatasource
 import com.lucifiere.coder2.model.BizDataContent
 import com.lucifiere.coder2.model.Field
 import com.lucifiere.coder2.model.TextBizDataSourceContext
-import com.lucifiere.coder2.parser.re.ReStatementParser
-import com.lucifiere.coder2.parser.re.Statement
-import com.lucifiere.coder2.parser.re.Token
+import com.lucifiere.coder2.provider.parser.re.ReStatementParser
+import com.lucifiere.coder2.provider.parser.re.Statement
+import com.lucifiere.coder2.provider.parser.re.Token
 
 import java.util.stream.Collectors
 
-class ReTextBizDataSource extends TextBizDataSource {
+class ReTextBizDataProvider extends TextBizDataProvider {
 
     private TextBizDataSourceContext context
 
-    ReTextBizDataSource(TextReader textReader, TextBizDataSourceContext context) {
+    ReTextBizDataProvider(TextDatasource textReader, TextBizDataSourceContext context) {
         super(textReader)
         this.context = context
     }
@@ -28,11 +28,9 @@ class ReTextBizDataSource extends TextBizDataSource {
         List<List<String>> tokens = []
         super.lines.each { tokens << it.tokenize(StrUtil.SPACE) }
         assert CollectionUtil.isNotEmpty(tokens)
-        List<Statement> statements = []
-        lines.each {
-            statements << ReStatementParser.createStatement(it)
-        }
-        statements = statements.stream().filter { Objects.nonNull(it) }.collect(Collectors.toList())
+        List<Statement> statements = lines.stream().map {
+            ReStatementParser.createStatement(it)
+        }.filter { Objects.nonNull(it) }.collect(Collectors.toList())
         // 提取业务数据
         BizDataContent bizDataContent = new BizDataContent()
         String tableName = extractSimpleTableName(statements)

@@ -1,10 +1,10 @@
-package com.lucifiere.coder2.helper
+package com.lucifiere.coder2.datasource
 
 import cn.hutool.core.util.StrUtil
 
 import java.util.stream.Collectors
 
-class FileTextReader implements TextReader {
+class FileTextReader implements TextDatasource {
 
     private String path
 
