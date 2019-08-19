@@ -1,6 +1,6 @@
 package com.lucifiere.coder2.resolver.templates.nodes
 
-abstract class TemplatePhaseNode implements Comparable<TemplatePhaseNode> {
+abstract class TemplatePhaseNode implements Comparable<TemplatePhaseNode>, Serializable {
 
     private int startLineNum
 
@@ -21,6 +21,14 @@ abstract class TemplatePhaseNode implements Comparable<TemplatePhaseNode> {
     @Override
     int compareTo(TemplatePhaseNode o) {
         return this.startLineNum <=> o.getLineNum().first
+    }
+
+    String getContent() {
+        return content
+    }
+
+    void setContent(String content) {
+        this.content = content
     }
 
 }

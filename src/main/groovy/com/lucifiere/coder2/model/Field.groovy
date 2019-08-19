@@ -6,7 +6,7 @@ class Field {
 
     private FieldType fieldType
 
-    private Identity name
+    private Identity identity
 
     private Integer length
 
@@ -20,24 +20,12 @@ class Field {
         this.fieldType = fieldType
     }
 
-    void setName(String name) {
-        this.name = Identity.of(name, Identity.NameStyle.UNDERLINE)
+    Identity getIdentity() {
+        return identity
     }
 
-    String getSqlName() {
-        return sqlName
-    }
-
-    void setSqlName(String sqlName) {
-        this.sqlName = sqlName
-    }
-
-    String getJavaName() {
-        return javaName
-    }
-
-    void setJavaName(String javaName) {
-        this.javaName = javaName
+    void setIdentity(String identity) {
+        this.identity = Identity.of(identity, Identity.NameStyle.UNDERLINE)
     }
 
     Integer getLength() {

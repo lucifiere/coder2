@@ -15,10 +15,13 @@ class BizDataContent {
         return fields
     }
 
+    Identity getIdentity() {
+        return identity
+    }
+
     void setFields(List<Field> fields) {
         this.fields = fields
     }
-
 
     void setIdentity(String identity) {
         this.identity = Identity.of(identity, Identity.NameStyle.UNDERLINE)

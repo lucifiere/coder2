@@ -9,6 +9,7 @@ class PhaseNodeUtils {
         List<TemplatePhaseNode> nodes = []
         extractFieldPhaseNodes(content).each { nodes << it }
         extractPlainPhaseNodes(content).each { nodes << it }
+        nodes.sort()
     }
 
     private static List<TemplatePhaseNode> extractFieldPhaseNodes(List<String> lines) {
