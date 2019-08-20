@@ -5,6 +5,7 @@ import cn.hutool.core.util.StrUtil
 import com.lucifiere.coder2.datasource.FileTextReader
 import com.lucifiere.coder2.model.BizDataContent
 import com.lucifiere.coder2.model.Field
+import com.lucifiere.coder2.provider.BizDataProvider
 import com.lucifiere.coder2.provider.parser.re.RePattern
 import com.lucifiere.coder2.resolver.Resolver
 import com.lucifiere.coder2.resolver.templates.constants.TemplateKeywords
@@ -31,9 +32,9 @@ abstract class TemplateResolver implements Resolver {
 
     protected final BizDataContent bizData
 
-    TemplateResolver(String templatePath, BizDataContent bizData) {
+    TemplateResolver(String templatePath, BizDataProvider bizDataProvider) {
         this.fileTextReader = new FileTextReader(templatePath)
-        this.bizData = bizData
+        this.bizData = bizDataProvider.getContent()
     }
 
     @Override

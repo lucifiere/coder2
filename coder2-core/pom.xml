@@ -11,11 +11,4 @@
 
     <artifactId>coder2-core</artifactId>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.lucifiere</groupId>
-            <artifactId>coder2-core</artifactId>
-        </dependency>
-    </dependencies>
-
 </project>

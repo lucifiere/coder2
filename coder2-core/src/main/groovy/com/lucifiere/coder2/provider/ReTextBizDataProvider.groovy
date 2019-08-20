@@ -3,7 +3,7 @@ package com.lucifiere.coder2.provider
 import cn.hutool.core.collection.CollectionUtil
 import cn.hutool.core.util.StrUtil
 import com.lucifiere.coder2.constants.MySqlKeywords
-import com.lucifiere.coder2.datasource.TextDatasource
+import com.lucifiere.coder2.datasource.FileTextReader
 import com.lucifiere.coder2.model.BizDataContent
 import com.lucifiere.coder2.model.Field
 import com.lucifiere.coder2.model.TextBizDataSourceContext
@@ -17,8 +17,8 @@ class ReTextBizDataProvider extends TextBizDataProvider {
 
     private TextBizDataSourceContext context
 
-    ReTextBizDataProvider(TextDatasource textReader, TextBizDataSourceContext context) {
-        super(textReader)
+    ReTextBizDataProvider(String textPath, TextBizDataSourceContext context) {
+        super(new FileTextReader(textPath))
         this.context = context
     }
 
