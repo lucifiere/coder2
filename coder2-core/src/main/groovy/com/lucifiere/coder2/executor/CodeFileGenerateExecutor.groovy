@@ -39,7 +39,8 @@ class CodeFileGenerateExecutor extends AbstractExecutor {
             throw new RuntimeException("ddl path cant be blank!(ddlPath)")
         String tablePrefix = defineMap.get(ExecutorCreator.TABLE_PREFIX)
         ExecutorContext.Builder builder = new ExecutorContext.Builder()
-        builder.setTablePrefix(tablePrefix).setGeneratedFileName(fileName).setTemplatePath(templatePath).setDdlFilePath(ddlPath).create()
+        builder.setTablePrefix(tablePrefix).setGeneratedFileName(fileName)
+                .setTemplatePath(templatePath).setDdlFilePath(ddlPath).create()
     }
 
 }

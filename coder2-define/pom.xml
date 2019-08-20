@@ -10,5 +10,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>coder2-define</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>com.lucifiere</groupId>
+            <artifactId>coder2-core</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 
 </project>

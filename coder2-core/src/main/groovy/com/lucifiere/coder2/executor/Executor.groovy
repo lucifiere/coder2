@@ -4,4 +4,6 @@ interface Executor {
 
     ExecResult exec()
 
+    String name()
+
 }
