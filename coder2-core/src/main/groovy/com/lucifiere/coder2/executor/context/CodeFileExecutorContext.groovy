@@ -3,9 +3,8 @@ package com.lucifiere.coder2.executor.context
 import com.lucifiere.coder2.model.TextBizDataSourceContext
 
 import javax.validation.constraints.NotBlank
-import javax.validation.constraints.NotNull
 
-class CodeFileExecutorContext<T> implements ExecutorContext {
+class CodeFileExecutorContext implements ExecutorContext {
 
     final String tablePrefix
 
@@ -18,19 +17,11 @@ class CodeFileExecutorContext<T> implements ExecutorContext {
     @NotBlank
     final String generatedFileName
 
-    @NotNull
-    final Class<T> executorClazz
-
-    @NotBlank
-    final String name
-
-    CodeFileExecutorContext(String tablePrefix, String templatePath, String ddlFilePath, String generatedFileName, Class<T> executorClazz, String executorName) {
+    CodeFileExecutorContext(String tablePrefix, String templatePath, String ddlFilePath, String generatedFileName) {
         this.tablePrefix = tablePrefix
         this.templatePath = templatePath
         this.ddlFilePath = ddlFilePath
         this.generatedFileName = generatedFileName
-        this.executorClazz = executorClazz
-        this.name = executorName
     }
 
     String getTablePrefix() {
@@ -47,14 +38,6 @@ class CodeFileExecutorContext<T> implements ExecutorContext {
 
     String getGeneratedFileName() {
         return generatedFileName
-    }
-
-    Class<T> getExecutorClazz() {
-        return executorClazz
-    }
-
-    String getName() {
-        return name
     }
 
     class Builder<T> {
@@ -79,16 +62,6 @@ class CodeFileExecutorContext<T> implements ExecutorContext {
          */
         String generatedFileName
 
-        /**
-         * 执行器类型
-         */
-        Class<T> executorClazz
-
-        /**
-         * 执行器名称
-         */
-        String name
-
         Builder setTablePrefix(String tablePrefix) {
             this.tablePrefix = tablePrefix
             this
@@ -109,18 +82,8 @@ class CodeFileExecutorContext<T> implements ExecutorContext {
             this
         }
 
-        Builder setExecutorClazz(Class<T> executorClazz) {
-            this.executorClazz = executorClazz
-            this
-        }
-
-        Builder setName(String executorName) {
-            this.name = executorName
-            this
-        }
-
         CodeFileExecutorContext create() {
-            return new CodeFileExecutorContext(tablePrefix, templatePath, ddlFilePath, generatedFileName, executorClazz, name)
+            return new CodeFileExecutorContext(tablePrefix, templatePath, ddlFilePath, generatedFileName)
         }
 
     }

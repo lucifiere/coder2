@@ -6,4 +6,8 @@ import java.lang.annotation.Target
 @Target(ElementType.METHOD)
 @interface ExecutorDef {
 
+    String name()
+
+    Class clazz()
+
 }

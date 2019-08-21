@@ -2,7 +2,8 @@ package com.lucifiere.coder2.executor
 
 import cn.hutool.core.util.ObjectUtil
 import cn.hutool.core.util.StrUtil
-import com.lucifiere.coder2.executor.context.CodeFileExecutorContext
+import com.lucifiere.coder2.executor.container.ExecutorSpec
+import com.lucifiere.coder2.executor.context.ExecutorContext
 import com.lucifiere.coder2.provider.BizDataProvider
 import com.lucifiere.coder2.resolver.Resolver
 
@@ -14,33 +15,33 @@ abstract class AbstractExecutor implements Executor {
 
     protected BizDataProvider bizDataProvider
 
-    protected CodeFileExecutorContext context
+    protected ExecutorContext context
 
     protected abstract Resolver getResolver(BizDataProvider provider)
 
     protected abstract BizDataProvider getDataProvider()
 
-    protected abstract void checkContext(CodeFileExecutorContext context)
+    protected abstract void checkContext(ExecutorContext context)
 
     @Override
     String name() {
         return name
     }
 
-    protected void checkContext0(CodeFileExecutorContext context) {
-        if (StrUtil.isBlank(context.getName())) {
+    private static void checkExecutorSpec(ExecutorSpec executorSpec) {
+        if (StrUtil.isBlank(executorSpec.getName())) {
             throw new RuntimeException("executor name cant be blank")
         }
-        if (ObjectUtil.isNull(context.getExecutorClazz())) {
+        if (ObjectUtil.isNull(executorSpec.getClazz())) {
             throw new RuntimeException("executor clazz cant be null")
         }
-        checkContext()
     }
 
-    AbstractExecutor(CodeFileExecutorContext context) {
-        checkContext0(context)
+    AbstractExecutor(ExecutorContext context, ExecutorSpec executorSpec) {
+        checkExecutorSpec(executorSpec)
+        checkContext()
         this.context = context
-        this.name = context.getName()
+        this.name = executorSpec.getName()
         this.bizDataProvider = getDataProvider()
         this.resolver = getResolver(this.bizDataProvider)
     }
