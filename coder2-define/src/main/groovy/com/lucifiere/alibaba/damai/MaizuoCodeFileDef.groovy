@@ -1,6 +1,7 @@
 package com.lucifiere.alibaba.damai
 
 import com.lucifiere.coder2.executor.CodeFileGenerateExecutor
+import com.lucifiere.coder2.executor.context.CodeFileExecutorContext
 import com.lucifiere.coder2.executor.container.ExecutorDef
 import com.lucifiere.coder2.executor.container.ExecutorGroup
 
@@ -8,15 +9,15 @@ import com.lucifiere.coder2.executor.container.ExecutorGroup
 class MaizuoCodeFileDef {
 
     @ExecutorDef
-    Map<String, String> daoDef() {
-        [
-                "executor"        : CodeFileGenerateExecutor.class.simpleName,
-                "templatePath"    : "src/test/resources/templates/damaiDao.cdl",
-                "ddlPath"         : "src/test/resources/ddl/coupon_template_rule.sql",
-                "name"            : "damai-dao-def",
-                "generateFileName": "xx",
-                "tablePrefix"     : "coupon_"
-        ]
+    CodeFileExecutorContext defDao() {
+        CodeFileExecutorContext.Builder builder = new CodeFileExecutorContext.Builder()
+        return builder.setTablePrefix("coupon_")
+                .setDdlFilePath("src/test/resources/ddl/coupon_template_rule.sql")
+                .setGeneratedFileName("x")
+                .setTemplatePath("src/test/resources/templates/damaiDao.cdl")
+                .setExecutorClazz(CodeFileGenerateExecutor.class)
+                .setName("defDao")
+                .create()
     }
 
 }
