@@ -1,6 +1,10 @@
 package com.lucifiere.coder2.executor.container
 
+import com.lucifiere.coder2.executor.Executor
+
 class ExecutorManager {
+
+    private ExecutorManager() {}
 
     /**
      * instance.
@@ -25,8 +29,12 @@ class ExecutorManager {
         return instance
     }
 
-    void registerExecutors(List<String>... path) {
+    void registerExecutors(List<String> path) {
         executorContainer.scanAndRegister(path)
+    }
+
+    Executor getExecutor(String name) {
+        return executorContainer.getExecutor(name)
     }
 
 }

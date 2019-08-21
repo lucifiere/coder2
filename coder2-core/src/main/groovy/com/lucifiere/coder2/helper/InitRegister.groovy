@@ -13,7 +13,7 @@ class InitRegister {
 
     @EventListener(ContextRefreshedEvent.class)
     void containerRegister() {
-        ExecutorManager manager = new ExecutorManager()
+        ExecutorManager manager = ExecutorManager.getInstance()
         manager.registerExecutors(path)
     }
 

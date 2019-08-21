@@ -16,7 +16,7 @@ class ExecutorContainer {
 
     private Map<String, Executor> executorMap = [:]
 
-    private Executor getExecutor(String name) {
+    Executor getExecutor(String name) {
         return executorMap.get(name)
     }
 
@@ -26,6 +26,7 @@ class ExecutorContainer {
         for (String classPackage : path) {
             allClassSet.addAll(handler.getPackageAllClasses(classPackage, true));
         }
+        register(allClassSet)
     }
 
     private synchronized void register(Set<Class<?>> classes) {
