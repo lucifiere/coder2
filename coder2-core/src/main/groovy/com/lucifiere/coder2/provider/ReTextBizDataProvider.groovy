@@ -6,6 +6,7 @@ import com.lucifiere.coder2.constants.MySqlKeywords
 import com.lucifiere.coder2.datasource.FileTextReader
 import com.lucifiere.coder2.model.BizDataContent
 import com.lucifiere.coder2.model.Field
+import com.lucifiere.coder2.model.Identity
 import com.lucifiere.coder2.model.TextBizDataSourceContext
 import com.lucifiere.coder2.provider.parser.re.ReStatementParser
 import com.lucifiere.coder2.provider.parser.re.Statement
@@ -54,14 +55,14 @@ class ReTextBizDataProvider extends TextBizDataProvider {
         null
     }
 
-    private List<Field> extractFields(List<Statement> statements) {
+    private static List<Field> extractFields(List<Statement> statements) {
         List<Field> fields = []
         for (Statement statement : statements) {
             if (CollectionUtil.isEmpty(statement.getTokens())) continue
             Token firstContentNode = statement.getTokens().get(1)
             if (ReStatementParser.isFiledToken(firstContentNode.getContent())) {
                 Field field = new Field()
-                field.setName(ReStatementParser.extractFiled(firstContentNode.getContent()))
+                field.setIdentity(ReStatementParser.extractFiled(firstContentNode.getContent()))
                 field.setFieldType(ReStatementParser.extractFiledType(firstContentNode.getNext().getContent()))
                 field.setLength(ReStatementParser.extractFiledLength(firstContentNode.getNext().getContent(), field.getFieldType()))
                 field.setComment(ReStatementParser.extractFiledComment(statement))

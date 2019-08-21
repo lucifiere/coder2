@@ -11,10 +11,10 @@ class MaizuoCodeFileDef {
     @ExecutorDef(name = "defDao", clazz = CodeFileGenerateExecutor.class)
     CodeFileExecutorContext defDao() {
         CodeFileExecutorContext.Builder builder = new CodeFileExecutorContext.Builder()
-        return builder.setTablePrefix("coupon_")
-                .setDdlFilePath("src/test/resources/ddl/coupon_template_rule.sql")
+        builder.setTablePrefix("coupon_")
+                .setDdlFilePath("src/main/resources/ddl/coupon_template_rule.sql")
                 .setGeneratedFileName("x")
-                .setTemplatePath("src/test/resources/templates/damaiDao.cdl")
+                .setTemplatePath("src/main/resources/templates/damaiDao.cdl")
                 .create()
     }
 

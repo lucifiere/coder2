@@ -54,45 +54,6 @@ class ClassPathScanHelper {
     }
 
     /**
-     * excludeInner:是否排除内部类 true->是 false->否<br>.
-     * checkInOrEx：过滤规则适用情况 true—>搜索符合规则的 false->排除符合规则的<br>
-     * classFilters：自定义过滤规则，如果是null或者空，即全部符合不过滤
-     *
-     * @param excludeInner whether exclude the inner class.
-     * @param checkInOrEx whether exclude the rule checking.
-     * @param classFilters the customized the classes to be filtered.
-     */
-    ClassPathScanHelper(Boolean excludeInner, Boolean checkInOrEx,
-                         List<String> classFilters) {
-        this.excludeInner = excludeInner
-        this.checkInOrEx = checkInOrEx
-        this.classFilters = classFilters
-
-    }
-
-    /**
-     * get all the classes with annotation.
-     *
-     * @param annotation the specific annotation.
-     * @param honorInherited honorInherited
-     * @return the set of the classes.
-     */
-    Set<Class<?>> getAllClassesWithAnnotation(Class<? extends Annotation> annotation, boolean honorInherited) {
-        return reflections.getTypesAnnotatedWith(annotation, honorInherited)
-    }
-
-    /**
-     * get all the sub classes with the specific parent class.
-     *
-     * @param < T >         sub class's type.
-     * @param parent the parent class.
-     * @return the set of the sub classes found.
-     */
-    def <T> Set<Class<? extends T>> getAllSubClassesByParent(Class<T> parent) {
-        return reflections.getSubTypesOf(parent)
-    }
-
-    /**
      * scan the package.
      *
      * @param basePackage the basic class package's string.
@@ -199,7 +160,7 @@ class ClassPathScanHelper {
         if (!dir.exists() || !dir.isDirectory()) {
             return
         }
-        File[] files = dir.listFiles { pathname -> filterClassFileByCustomization(pathname, recursive) }
+        File[] files = dir.listFiles()
         if (null == files || files.length == 0) {
             return
         }
@@ -211,8 +172,7 @@ class ClassPathScanHelper {
                 String className = file.getName().substring(0,
                         file.getName().length() - CLASS_EXTENSION_NAME.length())
                 try {
-                    classes.add(
-                            Thread.currentThread().getContextClassLoader().loadClass(packageName + '.' + className))
+                    classes.add(Thread.currentThread().getContextClassLoader().loadClass(packageName + '.' + className))
                 } catch (ClassNotFoundException e) {
                     LOGGER.error("LoadClass exception: ===>" + className, e)
                 } catch (NoClassDefFoundError error) {
@@ -277,60 +237,6 @@ class ClassPathScanHelper {
         String reg = "^" + filterString.replace("*", ".*") + "\$"
         Pattern p = Pattern.compile(reg)
         return p.matcher(className).find()
-    }
-
-    /**
-     * Gets excludeInner
-     *
-     * @return the excludeInner
-     */
-    boolean isExcludeInner() {
-        return excludeInner
-    }
-
-    /**
-     * Sets excludeInner
-     *
-     * @param excludeInner the excludeInner
-     */
-    void setExcludeInner(boolean excludeInner) {
-        this.excludeInner = excludeInner
-    }
-
-    /**
-     * Gets checkInOrEx
-     *
-     * @return the checkInOrEx
-     */
-    boolean isCheckInOrEx() {
-        return checkInOrEx
-    }
-
-    /**
-     * Sets checkInOrEx
-     *
-     * @param checkInOrEx the checkInOrEx
-     */
-    void setCheckInOrEx(boolean checkInOrEx) {
-        this.checkInOrEx = checkInOrEx
-    }
-
-    /**
-     * Gets classFilters
-     *
-     * @return the classFilters
-     */
-    List<String> getClassFilters() {
-        return classFilters
-    }
-
-    /**
-     * Sets classFilters
-     *
-     * @param classFilters the classFilters
-     */
-    void setClassFilters(List<String> classFilters) {
-        this.classFilters = classFilters
     }
 
 }

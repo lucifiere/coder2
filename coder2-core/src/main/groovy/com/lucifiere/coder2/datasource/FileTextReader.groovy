@@ -20,7 +20,7 @@ class FileTextReader implements TextDatasource {
                 StrUtil.trim(it)
             }.collect(Collectors.toList())
         } catch (Exception ignored) {
-            return null
+            throw new RuntimeException("file read failed with path : " + path)
         }
     }
 

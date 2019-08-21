@@ -21,7 +21,7 @@ abstract class AbstractExecutor implements Executor {
 
     protected abstract BizDataProvider getDataProvider()
 
-    protected abstract void checkContext(ExecutorContext context)
+    protected abstract void checkContext()
 
     @Override
     String name() {
@@ -39,8 +39,8 @@ abstract class AbstractExecutor implements Executor {
 
     AbstractExecutor(ExecutorContext context, ExecutorSpec executorSpec) {
         checkExecutorSpec(executorSpec)
-        checkContext()
         this.context = context
+        checkContext()
         this.name = executorSpec.getName()
         this.bizDataProvider = getDataProvider()
         this.resolver = getResolver(this.bizDataProvider)

@@ -1,6 +1,8 @@
 package com.lucifiere.coder2.executor.container
 
+
 import com.lucifiere.coder2.executor.Executor
+import org.springframework.util.CollectionUtils
 
 class ExecutorManager {
 
@@ -11,7 +13,7 @@ class ExecutorManager {
      */
     private static volatile ExecutorManager instance = null
 
-    private static ExecutorContainer executorContainer = new ExecutorContainer()
+    private ExecutorContainer executorContainer = new ExecutorContainer()
 
     /**
      * Gets instance.
@@ -30,6 +32,7 @@ class ExecutorManager {
     }
 
     void registerExecutors(List<String> path) {
+        if (CollectionUtils.isEmpty(path)) throw new RuntimeException("executor register package path cant be blank")
         executorContainer.scanAndRegister(path)
     }
 

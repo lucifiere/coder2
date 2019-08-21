@@ -22,9 +22,9 @@ class ExecutorContainer {
 
     synchronized void scanAndRegister(List<String> path) {
         ClassPathScanHelper handler = new ClassPathScanHelper()
-        Set<Class<?>> allClassSet = new TreeSet<>()
+        Set<Class<?>> allClassSet = new HashSet<>()
         for (String classPackage : path) {
-            allClassSet.addAll(handler.getPackageAllClasses(classPackage, true));
+            allClassSet.addAll(handler.getPackageAllClasses(classPackage, true))
         }
         register(allClassSet)
     }
@@ -33,13 +33,13 @@ class ExecutorContainer {
         classes.each {
             Class curClass = it as Class
             ExecutorGroup group = AnnotationUtils.findAnnotation(curClass, ExecutorGroup.class)
-            if (group != null) {
-                [AnnotationUtil.getDeclaredMethods()].each {
+            if (group != null && !group.skip()) {
+                curClass.getDeclaredMethods().each {
                     def curMethod = it as Method
                     ExecutorDef define = AnnotationUtils.findAnnotation(curMethod, ExecutorDef.class)
                     if (define != null) {
                         ExecutorSpec spec = ExecutorSpec.of(define)
-                        Object object = curMethod.invoke(curClass)
+                        Object object = curMethod.invoke(curClass.newInstance())
                         if (object instanceof ExecutorContext) {
                             ExecutorContext context = object as ExecutorContext
                             registerExecutor(context, spec)

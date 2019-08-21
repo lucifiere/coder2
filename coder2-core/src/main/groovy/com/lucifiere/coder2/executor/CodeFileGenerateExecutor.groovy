@@ -11,7 +11,7 @@ import com.lucifiere.coder2.resolver.templates.CodeTextTemplateResolver
 
 class CodeFileGenerateExecutor extends AbstractExecutor {
 
-    CodeFileGenerateExecutor(CodeFileExecutorContext context, ExecutorSpec executorSpec) {
+    CodeFileGenerateExecutor(ExecutorContext context, ExecutorSpec executorSpec) {
         super(context, executorSpec)
     }
 
@@ -34,8 +34,8 @@ class CodeFileGenerateExecutor extends AbstractExecutor {
     }
 
     @Override
-    protected void checkContext(ExecutorContext superContext) {
-        CodeFileExecutorContext context = superContext as CodeFileExecutorContext
+    protected void checkContext() {
+        CodeFileExecutorContext context = super.context as CodeFileExecutorContext
         if (StrUtil.isBlank(context.getDdlFilePath())) {
             throw new RuntimeException("ddl path cant be blank")
         }
