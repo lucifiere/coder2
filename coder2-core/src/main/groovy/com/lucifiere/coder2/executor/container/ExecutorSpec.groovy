@@ -23,4 +23,12 @@ class ExecutorSpec<T extends Executor> {
     void setClazz(Class<T> clazz) {
         this.clazz = clazz
     }
+
+    static ExecutorSpec of(ExecutorDef define) {
+        ExecutorSpec spec = new ExecutorSpec()
+        spec.setName(define.name())
+        spec.setClazz(define.clazz())
+        spec
+    }
+
 }
