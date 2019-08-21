@@ -29,8 +29,7 @@ class ExecutorContainer {
         register(allClassSet)
     }
 
-    private synchronized void register(Set<Class<?>> classes) {
-        List<Executor> executors = []
+    private void register(Set<Class<?>> classes) {
         classes.each {
             Class curClass = it as Class
             ExecutorGroup group = AnnotationUtils.findAnnotation(curClass, ExecutorGroup.class)
@@ -49,10 +48,9 @@ class ExecutorContainer {
                 }
             }
         }
-        executors
     }
 
-    private void registerExecutor(ExecutorContext context, ExecutorSpec spec) {
+    private synchronized void registerExecutor(ExecutorContext context, ExecutorSpec spec) {
         if (ObjectUtil.isNull(context)) {
             throw new RuntimeException("register failed cause context cant be null")
         }
