@@ -4,24 +4,36 @@ import cn.hutool.core.util.ObjectUtil
 import cn.hutool.core.util.StrUtil
 import com.lucifiere.coder2.executor.config.ExecutorConfig
 import com.lucifiere.coder2.executor.container.ExecutorSpec
-import com.lucifiere.coder2.provider.BizDataProvider
-import com.lucifiere.coder2.resolver.Resolver
+import com.lucifiere.coder2.executor.req.ExecutorRequest
+import com.lucifiere.coder2.model.BizDataContent
+import com.lucifiere.coder2.view.View
 
-abstract class AbstractExecutor implements Executor {
+abstract class AbstractExecutor<T> implements Executor<T> {
 
     protected String name
 
-    protected Resolver resolver
-
-    protected BizDataProvider bizDataProvider
-
     protected ExecutorConfig context
 
-    protected abstract BizDataProvider getDataProvider()
-
-    protected abstract getResolver(BizDataProvider provider)
-
     protected abstract void checkContext()
+
+    @Override
+    ExecResult<T> exec(ExecutorRequest request) {
+        try {
+            BizDataContent bizDataContent = getBizDataContent(request)
+            View view = resolve(bizDataContent)
+            processView(view)
+            return ExecResult.suc(view.getContent())
+        } catch (Exception e) {
+            println e
+            return ExecResult.fail(e.getMessage())
+        }
+    }
+
+    protected abstract BizDataContent getBizDataContent(ExecutorRequest request)
+
+    protected abstract View resolve(BizDataContent bizDataContent)
+
+    protected abstract void processView(View view)
 
     @Override
     String name() {
@@ -46,8 +58,6 @@ abstract class AbstractExecutor implements Executor {
         this.context = context
         checkContext()
         this.name = executorSpec.getName()
-        this.bizDataProvider = getDataProvider()
-        this.resolver = getResolver()
     }
 
 }

@@ -6,8 +6,8 @@ import com.lucifiere.coder2.resolver.model.ResolverRequest
 import com.lucifiere.coder2.resolver.model.TemplateResolverRequest
 import com.lucifiere.coder2.resolver.templates.nodes.PhaseNodeUtils
 import com.lucifiere.coder2.resolver.templates.nodes.TemplatePhaseNode
-import com.lucifiere.coder2.resolver.view.CodeFileView
-import com.lucifiere.coder2.resolver.view.View
+import com.lucifiere.coder2.view.View
+import com.lucifiere.coder2.view.model.CodeFileView
 
 class CodeTextTemplateResolver extends TemplateResolver {
 

@@ -1,7 +1,7 @@
-package com.lucifiere.coder2.resolver.view
+package com.lucifiere.coder2.view.model
 
 import com.lucifiere.coder2.constants.ContentType
-import com.lucifiere.coder2.resolver.view.View
+import com.lucifiere.coder2.view.View
 
 class CodeFileView implements View {
 

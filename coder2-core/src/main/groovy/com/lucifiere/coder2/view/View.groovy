@@ -1,4 +1,4 @@
-package com.lucifiere.coder2.resolver.view
+package com.lucifiere.coder2.view
 
 import com.lucifiere.coder2.constants.ContentType
 

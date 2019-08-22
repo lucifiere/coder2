@@ -2,9 +2,9 @@ package com.lucifiere.coder2.executor
 
 import com.lucifiere.coder2.executor.req.ExecutorRequest
 
-interface Executor {
+interface Executor<T> {
 
-    ExecResult exec(ExecutorRequest request)
+    ExecResult<T> exec(ExecutorRequest request)
 
     String name()
 
