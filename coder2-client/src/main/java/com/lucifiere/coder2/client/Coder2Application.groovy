@@ -1,9 +1,9 @@
-package com.lucifiere.coder2
+package com.lucifiere.coder2.client
 
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.lucifiere.coder2")
 class Coder2Application {
 
 	static void main(String[] args) {

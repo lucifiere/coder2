@@ -15,7 +15,11 @@
             <groupId>com.lucifiere</groupId>
             <artifactId>coder2-core</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.lucifiere</groupId>
+            <artifactId>coder2-define</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

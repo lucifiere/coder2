@@ -1,4 +1,4 @@
-package com.lucifiere.coder2.helper
+package com.lucifiere.coder2.client.support
 
 import com.lucifiere.coder2.executor.container.ExecutorManager
 import org.springframework.beans.factory.annotation.Autowired
@@ -7,7 +7,7 @@ import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
 
 @Component
-class InitRegister {
+class CoreInitializer {
 
     @Autowired
     ExecutorManager manager
@@ -17,6 +17,7 @@ class InitRegister {
     @EventListener(ContextRefreshedEvent.class)
     void containerRegister() {
         manager.registerExecutors(path)
+        SpringBootStartSupport.startAllCodeGenerator()
     }
 
 }
