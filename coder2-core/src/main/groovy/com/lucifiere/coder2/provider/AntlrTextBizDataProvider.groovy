@@ -1,16 +1,15 @@
 package com.lucifiere.coder2.provider
 
-import com.lucifiere.coder2.datasource.TextDatasource
 import com.lucifiere.coder2.model.BizDataContent
+import com.lucifiere.coder2.provider.model.BizDataRequest
 
 class AntlrTextBizDataProvider extends TextBizDataProvider {
 
-    AntlrTextBizDataProvider(TextDatasource textReader) {
-        super(textReader)
+    AntlrTextBizDataProvider() {
     }
 
     @Override
-    BizDataContent getContent() {
+    BizDataContent getContent(BizDataRequest bizDataRequest) {
         return null
     }
 

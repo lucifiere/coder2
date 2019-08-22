@@ -2,8 +2,8 @@ package com.lucifiere.coder2.executor
 
 import cn.hutool.core.util.ObjectUtil
 import cn.hutool.core.util.StrUtil
+import com.lucifiere.coder2.executor.config.ExecutorConfig
 import com.lucifiere.coder2.executor.container.ExecutorSpec
-import com.lucifiere.coder2.executor.context.ExecutorContext
 import com.lucifiere.coder2.provider.BizDataProvider
 import com.lucifiere.coder2.resolver.Resolver
 
@@ -15,11 +15,11 @@ abstract class AbstractExecutor implements Executor {
 
     protected BizDataProvider bizDataProvider
 
-    protected ExecutorContext context
-
-    protected abstract Resolver getResolver(BizDataProvider provider)
+    protected ExecutorConfig context
 
     protected abstract BizDataProvider getDataProvider()
+
+    protected abstract getResolver(BizDataProvider provider)
 
     protected abstract void checkContext()
 
@@ -37,13 +37,17 @@ abstract class AbstractExecutor implements Executor {
         }
     }
 
-    AbstractExecutor(ExecutorContext context, ExecutorSpec executorSpec) {
+    AbstractExecutor() {
+        throw new UnsupportedOperationException("com.lucifiere.coder2.executor.Executor is not supported autowire!")
+    }
+
+    AbstractExecutor(ExecutorConfig context, ExecutorSpec executorSpec) {
         checkExecutorSpec(executorSpec)
         this.context = context
         checkContext()
         this.name = executorSpec.getName()
         this.bizDataProvider = getDataProvider()
-        this.resolver = getResolver(this.bizDataProvider)
+        this.resolver = getResolver()
     }
 
 }

@@ -8,6 +8,8 @@ import com.lucifiere.coder2.model.Field
 import com.lucifiere.coder2.provider.BizDataProvider
 import com.lucifiere.coder2.provider.parser.re.RePattern
 import com.lucifiere.coder2.resolver.Resolver
+import com.lucifiere.coder2.resolver.model.ResolverRequest
+import com.lucifiere.coder2.resolver.model.TemplateResolverRequest
 import com.lucifiere.coder2.resolver.templates.constants.TemplateKeywords
 import com.lucifiere.coder2.resolver.templates.nodes.FieldPhaseNode
 import com.lucifiere.coder2.resolver.templates.nodes.PhaseNodeUtils
@@ -26,28 +28,15 @@ abstract class TemplateResolver implements Resolver {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TemplateResolver.class)
 
-    private final FileTextReader fileTextReader
-
     private final ExpressionParser elParser = new SpelExpressionParser()
 
     protected final BizDataContent bizData
 
-    TemplateResolver(String templatePath, BizDataProvider bizDataProvider) {
-        this.fileTextReader = new FileTextReader(templatePath)
+    TemplateResolver(BizDataProvider bizDataProvider) {
         this.bizData = bizDataProvider.getContent()
     }
 
-    @Override
-    View resolve() {
-        List<String> templates = fileTextReader.getText()
-        List<TemplatePhaseNode> nodes = PhaseNodeUtils.createTemplatePhaseNodes(templates)
-        String res = renderNodes(nodes)
-        createView(res)
-    }
-
-    abstract View createView(String content)
-
-    private String renderNodes(List<TemplatePhaseNode> nodes) {
+    protected String renderNodes(List<TemplatePhaseNode> nodes) {
         nodes.stream().map { this.render(it) }.collect(Collectors.joining(StrUtil.EMPTY))
     }
 

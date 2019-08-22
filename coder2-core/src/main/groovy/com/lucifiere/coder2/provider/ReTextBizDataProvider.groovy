@@ -6,8 +6,8 @@ import com.lucifiere.coder2.constants.MySqlKeywords
 import com.lucifiere.coder2.datasource.FileTextReader
 import com.lucifiere.coder2.model.BizDataContent
 import com.lucifiere.coder2.model.Field
-import com.lucifiere.coder2.model.Identity
-import com.lucifiere.coder2.model.TextBizDataSourceContext
+import com.lucifiere.coder2.provider.model.BizDataRequest
+import com.lucifiere.coder2.provider.model.TextBizDataRequest
 import com.lucifiere.coder2.provider.parser.re.ReStatementParser
 import com.lucifiere.coder2.provider.parser.re.Statement
 import com.lucifiere.coder2.provider.parser.re.Token
@@ -16,15 +16,14 @@ import java.util.stream.Collectors
 
 class ReTextBizDataProvider extends TextBizDataProvider {
 
-    private TextBizDataSourceContext context
-
-    ReTextBizDataProvider(String textPath, TextBizDataSourceContext context) {
-        super(new FileTextReader(textPath))
-        this.context = context
+    ReTextBizDataProvider() {
     }
 
     @Override
-    BizDataContent getContent() {
+    BizDataContent getContent(BizDataRequest bizDataRequest) {
+        TextBizDataRequest textBizDataRequest = bizDataRequest as TextBizDataRequest
+        FileTextReader fileTextReader = new FileTextReader(textBizDataRequest.getTextFilePath())
+        super.lines = fileTextReader.getText()
         assert CollectionUtil.isNotEmpty(super.lines)
         List<List<String>> tokens = []
         super.lines.each { tokens << it.tokenize(StrUtil.SPACE) }
@@ -34,20 +33,20 @@ class ReTextBizDataProvider extends TextBizDataProvider {
         }.filter { Objects.nonNull(it) }.collect(Collectors.toList())
         // 提取业务数据
         BizDataContent bizDataContent = new BizDataContent()
-        String tableName = extractSimpleTableName(statements)
+        String tableName = extractSimpleTableName(statements, textBizDataRequest.getTablePrefix())
         bizDataContent.setIdentity(tableName)
         List<Field> fields = extractFields(statements)
         bizDataContent.setFields(fields)
         bizDataContent
     }
 
-    private String extractSimpleTableName(List<Statement> statements) {
+    private static String extractSimpleTableName(List<Statement> statements, String tablePrefix) {
         for (Statement statement : statements) {
             for (Token token : statement.getTokens()) {
                 def isTableDefStatement = token != null && token.getPrev() != null && StrUtil.equals(token.getPrev().getContent(), MySqlKeywords.CREATE, true) && StrUtil.equals(token.getContent(), MySqlKeywords.TABLE, true)
                 if (isTableDefStatement) {
                     String simpleTableName = ReStatementParser.extractFiled(token.getNext().getContent())
-                    simpleTableName = simpleTableName.replaceFirst(context.getTablePrefix(), StrUtil.EMPTY)
+                    simpleTableName = simpleTableName.replaceFirst(tablePrefix, StrUtil.EMPTY)
                     return simpleTableName
                 }
             }

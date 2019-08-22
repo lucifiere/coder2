@@ -1,13 +1,12 @@
 package com.lucifiere.coder2.executor.container
 
-import cn.hutool.core.annotation.AnnotationUtil
 import cn.hutool.core.util.ObjectUtil
 import com.lucifiere.coder2.executor.Executor
-import com.lucifiere.coder2.executor.context.ExecutorContext
+import com.lucifiere.coder2.executor.config.ExecutorConfig
 import com.lucifiere.coder2.helper.ClassPathScanHelper
+import com.lucifiere.coder2.utils.ApplicationContextHolder
 import org.springframework.core.annotation.AnnotationUtils
 
-import java.lang.reflect.Constructor
 import java.lang.reflect.Method
 
 class ExecutorContainer {
@@ -40,8 +39,8 @@ class ExecutorContainer {
                     if (define != null) {
                         ExecutorSpec spec = ExecutorSpec.of(define)
                         Object object = curMethod.invoke(curClass.newInstance())
-                        if (object instanceof ExecutorContext) {
-                            ExecutorContext context = object as ExecutorContext
+                        if (object instanceof ExecutorConfig) {
+                            ExecutorConfig context = object as ExecutorConfig
                             registerExecutor(context, spec)
                         }
                     }
@@ -50,15 +49,14 @@ class ExecutorContainer {
         }
     }
 
-    private synchronized void registerExecutor(ExecutorContext context, ExecutorSpec spec) {
+    private synchronized void registerExecutor(ExecutorConfig context, ExecutorSpec spec) {
         if (ObjectUtil.isNull(context)) {
-            throw new RuntimeException("register failed cause context cant be null")
+            throw new RuntimeException("register failed cause config cant be null")
         }
         def executorClazz = spec.getClazz()
-        Constructor<Executor> executorConstructor = executorClazz.getConstructor(ExecutorContext.class, ExecutorSpec.class)
-        Executor executor = executorConstructor.newInstance(context, spec) as Executor
-        executorMap.putIfAbsent(spec.name, executor)
-        executors << executor
+        Executor e = ApplicationContextHolder.ins().getBean(executorClazz, context, spec) as Executor
+        executorMap.putIfAbsent(spec.name, e)
+        executors << e
     }
 
 }
