@@ -21,6 +21,22 @@ class CodeGenerator {
 
     private List<String> executorNames = Lists.newArrayList()
 
+    ExecutorManager getExecutorManager() {
+        return executorManager
+    }
+
+    void setExecutorManager(ExecutorManager executorManager) {
+        this.executorManager = executorManager
+    }
+
+    List<String> getExecutorNames() {
+        return executorNames
+    }
+
+    void setExecutorNames(List<String> executorNames) {
+        this.executorNames = executorNames
+    }
+
     CodeGenerator() {
     }
 

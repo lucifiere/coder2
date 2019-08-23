@@ -25,7 +25,8 @@ abstract class AbstractExecutor<T> implements Executor<T> {
             return ExecResult.suc(view.getContent())
         } catch (Exception e) {
             println e
-            return ExecResult.fail(e.getMessage())
+//            return ExecResult.fail(e.getMessage())
+            throw e
         }
     }
 

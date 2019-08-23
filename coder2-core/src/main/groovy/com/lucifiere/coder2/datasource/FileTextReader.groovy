@@ -15,12 +15,9 @@ class FileTextReader implements TextDatasource {
     @Override
     List<String> getText() {
         try {
-            List<String> lines = new File(path).readLines()
-            lines.stream().map {
-                StrUtil.trim(it)
-            }.collect(Collectors.toList())
+            new File(path).readLines()
         } catch (Exception ignored) {
-            throw new RuntimeException("file read failed with path : " + path)
+            throw new RuntimeException("文件读取失败，请检查路径是否正确： " + path)
         }
     }
 

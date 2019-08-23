@@ -12,17 +12,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class AliPicCodeGenerator extends CodeGenerator {
 
-    public static void main(String[] args) {
-        System.out.println(AliPicCodeGenerator.class.isAssignableFrom(CodeGenerator.class));
-    }
-
     @RunWithSpringBoot
     public void aliPic1() {
-        CodeFileGenerateRequest.Builder builder = new CodeFileGenerateRequest.Builder();
+        // 指定模板
         super.setCodeFileGeneratorNames("defDao");
+        // 生成入参
+        CodeFileGenerateRequest.Builder builder = new CodeFileGenerateRequest.Builder();
         ExecutorRequest request = builder
                 .setTablePrefix("coupon_")
-                .setDdlFilePath("src/main/resources/templates/damaiDao.cdl")
+                .setDdlFilePath("./coder2-client/src/main/resources/ddl/coupon_template_rule.sql")
                 .create();
         super.start(request);
     }

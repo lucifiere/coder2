@@ -7,8 +7,6 @@ class CodeFileView implements View {
 
     private String fileName
 
-    private String content
-
     private String fileContent
 
     CodeFileView(String fileName, String fileContent) {
@@ -21,7 +19,14 @@ class CodeFileView implements View {
 
     @Override
     String getContent() {
-        return content
+        return fileContent
     }
 
+    @Override
+    String toString() {
+        return "CodeFileView{" +
+                "fileName='" + fileName + '\'' +
+                ", fileContent=\n'" + fileContent + '\'' +
+                '}'
+    }
 }

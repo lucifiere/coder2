@@ -1,6 +1,7 @@
 package com.lucifiere.coder2.resolver.templates
 
 import com.lucifiere.coder2.datasource.FileTextReader
+import com.lucifiere.coder2.model.BizDataContent
 import com.lucifiere.coder2.provider.BizDataProvider
 import com.lucifiere.coder2.resolver.model.ResolverRequest
 import com.lucifiere.coder2.resolver.model.TemplateResolverRequest
@@ -11,8 +12,8 @@ import com.lucifiere.coder2.view.model.CodeFileView
 
 class CodeTextTemplateResolver extends TemplateResolver {
 
-    CodeTextTemplateResolver(BizDataProvider bizDataProvider) {
-        super(bizDataProvider)
+    CodeTextTemplateResolver(BizDataContent bizData) {
+        super(bizData)
     }
 
     @Override

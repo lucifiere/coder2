@@ -23,7 +23,7 @@ class ReTextBizDataProvider extends TextBizDataProvider {
     BizDataContent getContent(BizDataRequest bizDataRequest) {
         TextBizDataRequest textBizDataRequest = bizDataRequest as TextBizDataRequest
         FileTextReader fileTextReader = new FileTextReader(textBizDataRequest.getTextFilePath())
-        super.lines = fileTextReader.getText()
+        super.lines = fileTextReader.getText().stream().map { StrUtil.trim(it) }.collect(Collectors.toList())
         assert CollectionUtil.isNotEmpty(super.lines)
         List<List<String>> tokens = []
         super.lines.each { tokens << it.tokenize(StrUtil.SPACE) }
@@ -37,6 +37,7 @@ class ReTextBizDataProvider extends TextBizDataProvider {
         bizDataContent.setIdentity(tableName)
         List<Field> fields = extractFields(statements)
         bizDataContent.setFields(fields)
+        checkBizDataContent(bizDataContent)
         bizDataContent
     }
 
@@ -69,6 +70,15 @@ class ReTextBizDataProvider extends TextBizDataProvider {
             }
         }
         fields
+    }
+
+    private static void checkBizDataContent(BizDataContent bizDataContent) {
+        if (bizDataContent.identity == null || StrUtil.isBlank(bizDataContent.identity.originName)) {
+            throw new RuntimeException("ddl解析失败！未能成功解析实体名称")
+        }
+        if (CollectionUtil.isEmpty(bizDataContent.getFields())) {
+            throw new RuntimeException("ddl解析失败！未能成功解析实体字段")
+        }
     }
 
 }

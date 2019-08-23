@@ -11,7 +11,7 @@ class MaizuoCodeFileDef {
     @ExecutorDef(name = "defDao", clazz = CodeFileGenerateExecutor.class)
     CodeFileGenerateConfig defDao() {
         CodeFileGenerateConfig.Builder builder = new CodeFileGenerateConfig.Builder()
-        builder.setTemplatePath("src/main/resources/templates/damaiDao.cdl")
+        builder.setTemplatePath("./coder2-define/src/main/resources/templates/damaiDao.cdl")
                 .setGeneratedFileName("xx")
                 .create()
     }

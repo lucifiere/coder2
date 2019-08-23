@@ -50,8 +50,7 @@ class CodeFileGenerateExecutor<T> extends AbstractExecutor<T> {
         ResolverRequest resolverRequest = new TemplateResolverRequest()
         resolverRequest.setTemplatePath(context.getTemplatePath())
         resolverRequest.setGenerateFileName(context.getGeneratedFileName())
-        resolverRequest.setBizDataContent(bizDataContent)
-        Resolver resolver = new CodeTextTemplateResolver()
+        Resolver resolver = new CodeTextTemplateResolver(bizDataContent)
         resolver.resolve(resolverRequest)
     }
 

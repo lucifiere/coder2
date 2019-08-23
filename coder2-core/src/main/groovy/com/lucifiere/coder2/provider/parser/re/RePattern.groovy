@@ -8,6 +8,6 @@ class RePattern {
 
     final static def FIELD_lEN_PAT = ~/(?<=\().*(?=\))/
 
-    final static def SPEL_PAT = ~/\{.*}/
+    final static def SPEL_PAT = ~/\{.*?}/
 
 }

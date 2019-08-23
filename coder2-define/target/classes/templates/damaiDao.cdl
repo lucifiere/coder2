@@ -9,17 +9,11 @@ import java.util.List;
  * @date {new Date().format("yyyy-MM-dd")}
  */ 
 @Service
-public class {@cl}ServiceImpl implements {@cl}Service {
+public class {@cp}ServiceImpl implements {@cp}Service {
 
     @Autowired
-    private {@cl}Mapper {@cl}Mapper;
-        """
-    }
+    private {@cp}Mapper {@cl}Mapper;
 
-    @Override
-    protected String bodyCode() {
-        String capitalFirstEntity = capitalFirst(entityName)
-        """
     /**
      * 根据Example查询符合条件的结果列表
      * 

@@ -47,12 +47,17 @@ class ExecResult<T> {
         res
     }
 
+
     @Override
     String toString() {
         return "ExecResult{" +
                 "success=" + success +
                 ", msg='" + msg + '\'' +
-                '}'
+                "↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓<data>↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓\n" +
+                "\n" +
+                data +
+                "\n" +
+                '↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑<data>↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑'
     }
 
 }
